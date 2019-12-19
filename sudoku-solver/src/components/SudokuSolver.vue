@@ -16,7 +16,11 @@
         </ul>
       </div>
       <button @click="back">Back</button>
-      <button v-if="optionSelected=='solve'" @click="solveBoard()">Solve</button>
+      <div v-if="optionSelected=='solve'">
+        <button @click="goBackPlaces(5)">Go Back 5 Places</button>
+        <button @click="solveBoard()">Solve</button>
+      </div>
+      
       <button v-if="optionSelected=='play'">Check</button>
     </div>
   </div>
@@ -56,6 +60,16 @@ export default {
         return this.board[r][c]
       }else{
         return 
+      }
+    },
+    async goBackPlaces(p){
+      for(var i = 0; i < p; i++){
+        var st = this.stack.length - 1;
+        var r = this.stack[st][0]
+        var c = this.stack[st][1]
+        this.stack.pop()
+        Vue.set(this.board[r], c, null)
+        await this.sleep(100)
       }
     },
     copyBoard(){
